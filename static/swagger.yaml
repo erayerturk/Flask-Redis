@@ -1,0 +1,161 @@
+---
+swagger: "2.0"
+info:
+  description: "Python-Flask-REST-Redis-Docker"
+  version: "1.0.0"
+  title: "Python-Flask-REST-Redis-Docker"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "contact@erayerturk.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "127.0.0.1:8000"
+basePath: "/api"
+tags:
+- name: "keys"
+  description: "Key Value Store API"
+  externalDocs:
+    description: "Find out more"
+    url: "http://127.0.0.1:8000/api"
+
+schemes:
+- "http"
+paths:
+  /keys/:
+    put:
+      tags:
+      - "keys"
+      summary: "Sets a key-value pair"
+      description: ""
+      operationId: "set_a_key"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Keys object to set"
+        required: true
+        schema:
+          $ref: "#/definitions/Keys"
+      responses:
+        "201":
+          description: "successful operation"
+        "400":
+          description: "no key-value or empty values"
+      x-swagger-router-controller: "swagger_server.controllers.keys_controller"
+    get:
+      tags:
+      - "keys"
+      summary: "Shows all key-value pairs"
+      description: "Returns all key-value pairs"
+      operationId: "get_all_values"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+      x-swagger-router-controller: "swagger_server.controllers.keys_controller"
+    delete:
+      tags:
+      - "keys"
+      summary: "Delete all key-value pairs"
+      description: ""
+      operationId: "delete_all_values"
+      responses:
+        "204":
+          description: "successful operation"
+
+      x-swagger-router-controller: "swagger_server.controllers.keys_controller"
+  /keys/{Id}:
+    get:
+      tags:
+      - "keys"
+      summary: "Gets the value of given key"
+      description: "Returns a keys object"
+      operationId: "get_a_value"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Id"
+        in: "path"
+        description: "key of keys object"
+        required: true
+        type: "string"
+        example: "test_key"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Keys"
+        "400":
+          description: "Invalid ID supplied"
+      x-swagger-router-controller: "swagger_server.controllers.keys_controller"
+    head:
+      tags:
+      - "keys"
+      summary: "Checks the key is exist"
+      description: ""
+      operationId: "get_a_value"
+      parameters:
+      - name: "Id"
+        in: "path"
+        description: "key of keys object"
+        required: true
+        type: "string"
+        example: "test_key"
+      responses:
+        "200":
+          description: "successful operation"
+        "404":
+          description: "no data"
+
+      x-swagger-router-controller: "swagger_server.controllers.keys_controller"
+    delete:
+      tags:
+      - "keys"
+      summary: "Deletes a key-value pair"
+      description: ""
+      operationId: "delete_a_key"
+
+      parameters:
+      - name: "Id"
+        in: "path"
+        description: "key of keys object"
+        required: true
+        type: "string"
+        example: "test_key"
+      responses:
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Keys object not found"
+      x-swagger-router-controller: "swagger_server.controllers.keys_controller"
+
+
+definitions:
+
+  Keys:
+    type: "object"
+    required:
+    - "key"
+    - "value"
+    properties:
+      key:
+        type: "string"
+        example: "test_key"
+
+      value:
+        type: "string"
+        example: "test_value"
+    xml:
+      name: "Keys"
+    example:
+      key: "test_key"
+      value: "test_value"
+
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
